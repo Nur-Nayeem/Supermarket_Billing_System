@@ -17,6 +17,10 @@ cursor = db.cursor()
 customtkinter.set_appearance_mode("light")
 customtkinter.set_default_color_theme("dark-blue")
 
+def serach_products():
+   pass
+
+
 def update_adding():
     # Connect to the MySQL database.
     db=sqlite3.connect('supermarket.db')
@@ -267,17 +271,17 @@ def update_combobox3():
     combobox3.configure(values=column_values)
 
 root = customtkinter.CTk()
-root.geometry("1460x700+0+0")
+root.geometry("1525x785+0+0")
 root.title("Add Products")
 root.resizable(False, False)
 
 
-bigFram=customtkinter.CTkFrame(root,width=980,height=580)
+bigFram=customtkinter.CTkFrame(root,width=1450,height=780)
 bigFram.pack(fill='both',expand=True) 
 
 
 # top fram
-topMenueFram=customtkinter.CTkFrame(bigFram,width=980,height=50)
+topMenueFram=customtkinter.CTkFrame(bigFram,width=1450,height=50)
 topMenueFram.pack(fill='x',side='top')
     
 
@@ -290,21 +294,24 @@ Add_Emplee.place(x=200,y=20)
 
 
 # content fram
-bottomfram=customtkinter.CTkFrame(bigFram,width=980,height=520)
+bottomfram=customtkinter.CTkFrame(bigFram,width=1450,height=720)
 bottomfram.pack(fill='both',expand=True)
 
-Add_productlbl=customtkinter.CTkLabel(bottomfram,text="All Product",font=("times new roman",20,"bold"))
-Add_productlbl.place(x=450,y=0)
+Add_productlbl=customtkinter.CTkLabel(bottomfram,text="All Product",font=("times new roman",30,"bold"))
+Add_productlbl.place(x=650,y=5)
 
-contentfrm=customtkinter.CTkFrame(bottomfram,width=590,height=600)
-contentfrm.place(x=10,y=30)
+contentfrm=customtkinter.CTkFrame(bottomfram,width=750,height=600)
+contentfrm.place(x=10,y=50)
 # contentlbl
 contentlbl=customtkinter.CTkLabel(contentfrm,text='Add_Products',font=('times new roman',20,'bold'),height=50)
-contentlbl.place(x=250,y=10)
+contentlbl.place(x=260,y=10)
 
-# remaingng fram
-remainingFram=customtkinter.CTkFrame(bottomfram,width=400,height=500)
-remainingFram.place(x=600,y=30)
+# Right  fram
+#serach product fram
+searchfram = customtkinter.CTkFrame(bottomfram,width=820,height=200)
+searchfram.place(x=650,y=50)
+remainingFram=customtkinter.CTkFrame(bottomfram,width=780,height=350)
+remainingFram.place(x=650,y=250)
 
  
 # Subproducts fram1
@@ -389,6 +396,37 @@ addNewProductBtn3=customtkinter.CTkButton(contentfrm,text="Delete",fg_color='#cf
 addNewProductBtn3.place(x=20,y=480)
 
 
+#product search box for checking quantity:
+product_lbl=customtkinter.CTkLabel(searchfram,text="Cheack quantity of the Products",font=("Arial",15),)
+product_lbl.place(x=20,y=20)
+prod_name_search=customtkinter.CTkEntry(searchfram,placeholder_text='Search Products',font=("Arial",15),height=40,width=200)
+prod_name_search.place(x=10,y=70)
+prod_search_btn=customtkinter.CTkButton(searchfram,text='Search',font=("Arial",12),command=serach_products,height=40,width=200)
+prod_search_btn.place(x=10,y=120)
+
+search_prod_detailsfrm = customtkinter.CTkFrame(searchfram,height=300,width=400)
+search_prod_detailsfrm.place(x=260,y=30)
+s_pr_name_lvl = customtkinter.CTkLabel(search_prod_detailsfrm,text="Product Name:",font=("Arial",15,"bold"))
+s_pr_name_lvl.place(x=10,y=10)
+s_pr_name_enty = customtkinter.CTkEntry(search_prod_detailsfrm,font=("Arial",15,"bold"))
+s_pr_name_enty.place(x=150,y=10)
+
+
+s_pr_qnt_lvl = customtkinter.CTkLabel(search_prod_detailsfrm,text="Quantity:",font=("Arial",15,"bold"))
+s_pr_qnt_lvl.place(x=10,y=50)
+s_pr_qnt_enty = customtkinter.CTkEntry(search_prod_detailsfrm,font=("Arial",15,"bold"))
+s_pr_qnt_enty.place(x=150,y=50)
+
+
+s_pr_price_lvl = customtkinter.CTkLabel(search_prod_detailsfrm,text="Product price:",font=("Arial",15,"bold"))
+s_pr_price_lvl.place(x=10,y=90)
+s_pr_price_enty = customtkinter.CTkEntry(search_prod_detailsfrm,font=("Arial",15,"bold"))
+s_pr_price_enty.place(x=150,y=90)
+
+s_pr_discount_lvl = customtkinter.CTkLabel(search_prod_detailsfrm,text="Discount:",font=("Arial",15,"bold"))
+s_pr_discount_lvl.place(x=10,y=130)
+s_pr_discount_enty = customtkinter.CTkEntry(search_prod_detailsfrm,font=("Arial",15,"bold"))
+s_pr_discount_enty.place(x=150,y=130)
 
 ##Treeview widget data
 style = ttk.Style()
@@ -403,7 +441,7 @@ table_data1=get_product_quantities1() #fatching product1
 table_data2=get_product_quantities2()
 table_data3=get_product_quantities3()
 
-treeview = ttk.Treeview(remainingFram,columns=(1,2,3,4,5),show='headings',style='mystyle.Treeview',height=28,selectmode='extended')
+treeview = ttk.Treeview(remainingFram,columns=(1,2,3,4,5),show='headings',style='mystyle.Treeview',height=20,selectmode='extended')
 
 # Add the headers to the treeview widget.
 treeview["columns"] = ("Product Name", "Quantity","Price","Discount_price","Discount")
