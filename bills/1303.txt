@@ -1,0 +1,30 @@
+			     ****Welcome Customer****
+
+Bill Number:        1303   					 Date: Sun Oct 29 14:13:25 2023
+Customer Name:  NurNayeem
+Phone Number:    01912345678
+Phone Number:    jannatunayeem@g.com
+================================================================
+Products				Quantity				Prices
+================================================================
+Face Creem  				  1				85 TK
+Shampo  				  2				8 TK
+Man's Creem  				  1				120 TK
+Rice  				  1				60 TK
+Oil  				  1				170 TK
+Dall  				  1				120 TK
+Bread  				  1				50 TK
+Eag  				  2				24 TK
+Snacks  				  1				80 TK
+Milk  				  2				200 TK
+Power  				  1				25 TK
+water  				  2				30 TK
+----------------------------------------------------------------------------------------------------------------
+Stationary Tax								10.65 TK
+Grocery Tax								20.16 TK
+Drink Tax								7.65 TK
+---------------------------------------------------------------------------------------------------------------
+Total: 								1010.46 TK
+Discount								44.75 TK
+---------------------------------------------------------------------------------------------------------------
+Total Bill								965.71 TK

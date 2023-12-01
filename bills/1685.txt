@@ -1,0 +1,22 @@
+			     ****Welcome Customer****
+
+Bill Number:        1685
+Customer Name:  Sayoni
+Phone Number:    01234567897
+================================================================
+Products				Quantity				Prices
+================================================================
+Face Cream  				  3				85 TK
+Face Cream  				  3				90 TK
+Face Cream  				  2				4 TK
+Face Cream  				  5				60 TK
+Face Cream  				  2				35 TK
+Face Cream  				  2				12 TK
+Face Cream  				  5				65 TK
+Face Cream  				  2				35 TK
+----------------------------------------------------------------------------------------------------------------
+Stationary Tax								36.26 TK
+Grocery Tax								30.32 TK
+Drink Tax								37.0 TK
+---------------------------------------------------------------------------------------------------------------
+Total Bill								1370.58 TK

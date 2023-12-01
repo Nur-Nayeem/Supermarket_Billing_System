@@ -1,0 +1,21 @@
+			     ****Welcome Customer****
+
+Bill Number:        7313   						 Date: Thu Oct 12 01:22:11 2023
+Customer Name:  Nur
+Phone Number:    01712345678
+Phone Number:    nur@gmail.com
+================================================================
+Products				Quantity				Prices
+================================================================
+Face Wash  				  1				100 TK
+Body Lousion  				  1				160 TK
+Shampo  				  2				4 TK
+Tea  				  2				35 TK
+Speed  				  1				30 TK
+Power  				  1				25 TK
+----------------------------------------------------------------------------------------------------------------
+Stationary Tax								18.48 TK
+Grocery Tax								6.4 TK
+Drink Tax								5.5 TK
+---------------------------------------------------------------------------------------------------------------
+Total Bill								429.38 TK

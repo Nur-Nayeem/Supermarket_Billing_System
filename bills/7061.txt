@@ -1,0 +1,26 @@
+			     ****Welcome Customer****
+
+Bill Number:        7061
+Customer Name:  rocky
+Phone Number:    378385
+================================================================
+Products				Quantity				Prices
+================================================================
+Bath Sop    				  1				80 TK
+Tooth Pest  				  1				50 TK
+Hair Gel    				  1				70 TK
+Rice    				  10				550 TK
+Oil     				  5				900 TK
+Suger   				  5				700 TK
+Daal    				  5				500 TK
+Tea     				  2				80 TK
+Bread   				  4				320 TK
+Milk  				  3				300 TK
+7 Up   				  5				300 TK
+Speed    				  2				60 TK
+----------------------------------------------------------------------------------------------------------------
+Stationary Tax								14.0 TK
+Grocery Tax								244.0 TK
+Drink Tax								66.0 TK
+---------------------------------------------------------------------------------------------------------------
+Total Bill								4234.0 TK

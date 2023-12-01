@@ -1,0 +1,32 @@
+			     ****Welcome Customer****
+
+Bill Number:        1059   					 Date: Sun Oct 29 10:30:15 2023
+Customer Name:  Rocky
+Phone Number:    01706726662
+Phone Number:    rocky@gmail.com
+================================================================
+Products				Quantity				Prices
+================================================================
+Bath Soup  				  2				55 TK
+Tooth Pest  				  1				65 TK
+Body Lousion  				  2				160 TK
+Shampo  				  2				4 TK
+Rice  				  15				60 TK
+Oil  				  5				170 TK
+Suger  				  2				140 TK
+Dall  				  3				120 TK
+Tea  				  2				35 TK
+Bread  				  10				50 TK
+Eag  				  30				12 TK
+Milk  				  4				100 TK
+7 Up  				  2				65 TK
+Laban  				  5				35 TK
+----------------------------------------------------------------------------------------------------------------
+Stationary Tax								25.15 TK
+Grocery Tax								132.8 TK
+Drink Tax								21.15 TK
+---------------------------------------------------------------------------------------------------------------
+Total: 								4707.1 TK
+Discount								147.0 TK
+---------------------------------------------------------------------------------------------------------------
+Total Bill								4560.1 TK
