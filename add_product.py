@@ -25,6 +25,31 @@ def checklessproduct():
     else:
         pass
 
+
+def update_productbtn():
+    selected_row=treeview.focus()
+    if selected_row:
+        data=treeview.item(selected_row)
+        row=data["values"]
+        if row:
+           cursor.execute("UPDATE products1 set price=? WHERE name=?",(int(addNewProductPrice.get()),row[0]))
+           db.commit()
+           cursor.execute("UPDATE products2 set price=? WHERE name=?",(int(addNewProductPrice.get()),row[0]))
+           db.commit()
+           cursor.execute("UPDATE products3 set price=? WHERE name=?",(int(addNewProductPrice.get()),row[0]))
+           db.commit()
+           cursor.execute("UPDATE ContainerTable set price=? WHERE name=?",(int(addNewProductPrice.get()),row[0]))
+           db.commit()
+           messagebox.showinfo("Success","product update succesfully Successfully")
+           update_adding() 
+           update_combobox1()
+           update_combobox2()
+           update_combobox3()
+           addNewProductPrice.delete(0,END)
+    else:
+        messagebox.showinfo("Error","Please Select a Row")
+
+
 def get_quantity(name,tablename):
     try:
         cursor.execute(f"SELECT quantity FROM {tablename} WHERE name = ?", (name,))
@@ -484,8 +509,12 @@ addNewProductQuntity.place(x=300,y=380)
 addNewProductBtn1=customtkinter.CTkButton(contentfrm,text="Add",fg_color='#03a819',hover_color='#03a819',corner_radius=20,command=addNewProduct,width=500)
 addNewProductBtn1.place(x=20,y=430)
 
+addNewProductBtn2=customtkinter.CTkButton(contentfrm,text="Update",fg_color='#b86512',hover_color='#b86512',corner_radius=20,command=update_productbtn,width=500)
+addNewProductBtn2.place(x=20,y=480)
+
 addNewProductBtn3=customtkinter.CTkButton(contentfrm,text="Delete",fg_color='#cf061a',hover_color='#cf061a',corner_radius=20,command=Delete_productbtn,width=500)
-addNewProductBtn3.place(x=20,y=480)
+addNewProductBtn3.place(x=20,y=530)
+
 
 
 #product search box for checking quantity:
