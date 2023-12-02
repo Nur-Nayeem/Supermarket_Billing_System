@@ -63,7 +63,6 @@ def get_data(event):
     selected_row=treeview.focus()
     data=treeview.item(selected_row)
     row=data["values"]
-    id_entry=row[0]
     s_pr_name_enty.insert(0,row[0])
     s_pr_qnt_enty.insert(0,row[1])
     s_pr_price_enty.insert(0,row[2])
