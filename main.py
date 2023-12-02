@@ -18,6 +18,18 @@ customtkinter.set_appearance_mode("light")
 customtkinter.set_default_color_theme("dark-blue")
 # functions:
 
+def valid_quantity(tablename,name,quantity):
+    cursor.execute(f"SELECT quantity FROM {tablename} WHERE name = ?", (name,))
+    value = cursor.fetchone()[0]
+    qnt=int(quantity)
+    try:
+        if qnt > value:
+            messagebox.showerror("Error", "Not enough quantity of product")
+            quantity='0'
+    except Exception as e:
+        messagebox.showerror("Error", "Failed to add product: {}".format(e))
+    return quantity
+
 def get_column_values( table_name, column_name):
     cursor.execute(f"SELECT {column_name} FROM {table_name}")
     column_values = [row[0] for row in cursor.fetchall()]
@@ -142,7 +154,7 @@ def billEachprod(tablename,name,quantity,price):
             db.commit()
             bilArea.insert(END,f"\n{name}  \t\t\t\t  {quantity}\t\t\t\t{price} TK")
         else:
-            messagebox.showerror("Error", "Not enough quantity of product")
+            messagebox.showerror("Error", "gh quantity of product")
             return
     except Exception as e:
       messagebox.showerror("Error", "Failed to add product: {}".format(e))
@@ -164,8 +176,9 @@ def addCmbItem1():
     name=combobox1.get()
     quantity=int(combobox1qntty.get())
     combo_dict[name] = quantity
-    price1 = (pricecomboboxproduct(combobox1,"products1")*int(combobox1qntty.get()))
-    discprice1= (priceDisccomboboxproduct(combobox1,"products1") * int(combobox1qntty.get()))
+    pr1=int(valid_quantity("products1",name,combobox1qntty.get()))
+    price1 = (pricecomboboxproduct(combobox1,"products1")*pr1)
+    discprice1= (priceDisccomboboxproduct(combobox1,"products1") *pr1)
     comblistPrice.append(price1)
     comblistDiscPrice.append(discprice1)
     combobox1qntty.delete(0,END)
@@ -173,8 +186,9 @@ def addCmbItem2():
     name=combobox2.get()
     quantity=int(combobox2qntty.get())
     combo_dict2[name] = quantity
-    price = (pricecomboboxproduct(combobox2,"products2")*int(combobox2qntty.get()))
-    discprice= (priceDisccomboboxproduct(combobox2,"products2") * int(combobox2qntty.get()))
+    pr2=int(valid_quantity("products2",name,combobox2qntty.get()))
+    price = (pricecomboboxproduct(combobox2,"products2")*pr2)
+    discprice= (priceDisccomboboxproduct(combobox2,"products2") * pr2)
     comblistPrice2.append(price)
     comblistDiscPrice2.append(discprice)
     combobox2qntty.delete(0,END)
@@ -182,8 +196,9 @@ def addCmbItem3():
     name=combobox3.get()
     quantity=int(combobox3qntty.get())
     combo_dict3[name] = quantity
-    price = (pricecomboboxproduct(combobox3,"products3")*int(combobox3qntty.get()))
-    discprice= (priceDisccomboboxproduct(combobox3,"products3") * int(combobox3qntty.get()))
+    pr3=int(valid_quantity("products3",name,combobox3qntty.get()))
+    price = (pricecomboboxproduct(combobox3,"products3")*pr3)
+    discprice= (priceDisccomboboxproduct(combobox3,"products3") * pr3)
     comblistPrice3.append(price)
     comblistDiscPrice3.append(discprice)
     combobox3qntty.delete(0,END)
@@ -399,6 +414,13 @@ def priceDisccomboboxproduct(combobox,tablename):
     disc_price = cursor.fetchone()[0]
     return disc_price
 
+def checklessproduct():
+    cursor.execute("SELECT name FROM ContainerTable WHERE  quantity<10 ")
+    value = cursor.fetchone()
+    if value:
+        messagebox.showwarning("Worning",f"The stock of {value[0]}'s is going to be ended")
+    else:
+        pass
 
 
 def total():
@@ -475,19 +497,24 @@ def total():
     if combobox3qntty.get()!='0':
         addCmbItem3()
         
-    
-    fcrmPrice=int(prod1qnty.get())*get_price("Face Creem","products1")
-    fcrmDiscPrice=int(prod1qnty.get())*get_disc_price("Face Creem","products1")
-    bathSopPice=int(prod2qnty.get())*get_price("Bath Soup","products1")
-    bathSopDiscPrice=int(prod2qnty.get())*get_disc_price("Bath Soup","products1")
-    facewasPrice=int(prod3qnty.get())*get_price("Face Wash","products1")
-    facewasDiscPrice=int(prod3qnty.get())*get_disc_price("Face Wash","products1")
-    thpestPrice=int(prod4qnty.get())*get_price("Tooth Pest","products1")
-    thpestDiscPrice=int(prod4qnty.get())*get_disc_price("Tooth Pest","products1")
-    hairGelPrice=int(prod5qnty.get())*get_price("Hair Gel","products1")
-    hairGelDiscPrice=int(prod5qnty.get())*get_disc_price("Hair Gel","products1")
-    bodyLosonPrice=int(prod6qnty.get())*get_price("Body Lousion","products1")
-    bodyLosonDiscPrice=int(prod6qnty.get())*get_disc_price("Body Lousion","products1")
+    fcq=int(valid_quantity("products1","Face Creem",prod1qnty.get()))
+    fcrmPrice=fcq*get_price("Face Creem","products1")
+    fcrmDiscPrice=fcq*get_disc_price("Face Creem","products1")
+    bcq=int(valid_quantity("products1","Bath Soup",prod2qnty.get()))
+    bathSopPice=bcq*get_price("Bath Soup","products1")
+    bathSopDiscPrice=bcq*get_disc_price("Bath Soup","products1")
+    fcw=int(valid_quantity("products1","Face Wash",prod3qnty.get()))
+    facewasPrice=fcw*get_price("Face Wash","products1")
+    facewasDiscPrice=fcw*get_disc_price("Face Wash","products1")
+    thpst=int(valid_quantity("products1","Tooth Pest",prod4qnty.get()))
+    thpestPrice=thpst*get_price("Tooth Pest","products1")
+    thpestDiscPrice=thpst*get_disc_price("Tooth Pest","products1")
+    hrgl=int(valid_quantity("products1","Hair Gel",prod5qnty.get()))
+    hairGelPrice=hrgl*get_price("Hair Gel","products1")
+    hairGelDiscPrice=hrgl*get_disc_price("Hair Gel","products1")
+    bdlsn=int(valid_quantity("products1","Body Lousion",prod6qnty.get()))
+    bodyLosonPrice=bdlsn*get_price("Body Lousion","products1")
+    bodyLosonDiscPrice=bdlsn*get_disc_price("Body Lousion","products1")
     
     for item in comblistPrice:
         newProdcomboboxPrice1 += item
@@ -510,18 +537,24 @@ def total():
     
     
     # grocery total price
-    ricePrice=int(gros1qnty.get())*get_price("Rice","products2")
-    riceDiscPrice=int(gros1qnty.get())*get_disc_price("Rice","products2")
-    oilPrice=int(gros2qnty.get())*get_price("Oil","products2")
-    oilDiscPrice=int(gros2qnty.get())*get_disc_price("Oil","products2")
-    sugerPrice=int(gros3qnty.get())*get_price("Suger","products2")
-    sugerDiscPrice=int(gros3qnty.get())*get_disc_price("Suger","products2")
-    dallPrice=int(gros4qnty.get())*get_price("Dall","products2")
-    dallDiscPrice=int(gros4qnty.get())*get_disc_price("Dall","products2")
-    teaPrice=int(gros5qnty.get())*get_price("Tea","products2")
-    teaDiscPrice=int(gros5qnty.get())*get_disc_price("Tea","products2")
-    breadPrice=int(gros6qnty.get())*get_price("Bread","products2")
-    breadDiscPrice=int(gros6qnty.get())*get_disc_price("Bread","products2")
+    rcq=int(valid_quantity("products2","Rice",gros1qnty.get()))
+    ricePrice=rcq*get_price("Rice","products2")
+    riceDiscPrice=rcq*get_disc_price("Rice","products2")
+    olq=int(valid_quantity("products2","Oil",gros1qnty.get()))
+    oilPrice=olq*get_price("Oil","products2")
+    oilDiscPrice=olq*get_disc_price("Oil","products2")
+    sgq=int(valid_quantity("products2","Suger",gros3qnty.get()))
+    sugerPrice=sgq*get_price("Suger","products2")
+    sugerDiscPrice=sgq*get_disc_price("Suger","products2")
+    dlq=int(valid_quantity("products2","Dall",gros4qnty.get()))
+    dallPrice=dlq*get_price("Dall","products2")
+    dallDiscPrice=dlq*get_disc_price("Dall","products2")
+    tq=int(valid_quantity("products2","Tea",gros5qnty.get()))
+    teaPrice=tq*get_price("Tea","products2")
+    teaDiscPrice=tq*get_disc_price("Tea","products2")
+    brq=int(valid_quantity("products2","Bread",gros6qnty.get()))
+    breadPrice=brq*get_price("Bread","products2")
+    breadDiscPrice=brq*get_disc_price("Bread","products2")
     
     for item in comblistPrice2:
         newProdcomboboxPrice2 += item
@@ -542,18 +575,24 @@ def total():
     groceryTaxentry.insert(0,str(round(grocerytaxPrice,5))+ ' TK')
     
     # Drinks total price
-    milkPrice=int(drink1qnty.get())*get_price("Milk","products3")
-    milkDiscPrice=int(drink1qnty.get())*get_disc_price("Milk","products3")
-    pepsiPrice=int(drink2qnty.get())*get_price("Pepsi","products3")
-    pepsiDiscPrice=int(drink2qnty.get())*get_disc_price("Pepsi","products3")
-    sevenUpPrice=int(drink3qnty.get())*get_price("7 Up","products3")
-    sevenUpDiscPrice=int(drink3qnty.get())*get_disc_price("7 Up","products3")
-    cocPrice=int(drink4qnty.get())*get_price("Coca Cola","products3")
-    cocDiscPrice=int(drink4qnty.get())*get_disc_price("Coca Cola","products3")
-    speedPrice=int(drink5qnty.get())*get_price("Speed","products3")
-    speedDiscPrice=int(drink5qnty.get())*get_disc_price("Speed","products3")
-    spritePrice=int(drink6qnty.get())*get_price("Sprite","products3")
-    spriteDiscPrice=int(drink6qnty.get())*get_disc_price("Sprite","products3")
+    mlkq=int(valid_quantity("products3","Milk",drink1qnty.get()))
+    milkPrice=mlkq*get_price("Milk","products3")
+    milkDiscPrice=mlkq*get_disc_price("Milk","products3")
+    ppq=int(valid_quantity("products3","Pepsi",drink2qnty.get()))
+    pepsiPrice=ppq*get_price("Pepsi","products3")
+    pepsiDiscPrice=ppq*get_disc_price("Pepsi","products3")
+    svnq=int(valid_quantity("products3","7 Up",drink3qnty.get()))
+    sevenUpPrice=svnq*get_price("7 Up","products3")
+    sevenUpDiscPrice=svnq*get_disc_price("7 Up","products3")
+    ccq=int(valid_quantity("products3","Coca Cola",drink4qnty.get()))
+    cocPrice=ccq*get_price("Coca Cola","products3")
+    cocDiscPrice=ccq*get_disc_price("Coca Cola","products3")
+    spq=int(valid_quantity("products3","Speed",drink5qnty.get()))
+    speedPrice=spq*get_price("Speed","products3")
+    speedDiscPrice=spq*get_disc_price("Speed","products3")
+    sprq=int(valid_quantity("products3","Sprite",drink6qnty.get()))
+    spritePrice=sprq*get_price("Sprite","products3")
+    spriteDiscPrice=sprq*get_disc_price("Sprite","products3")
     
     for item in comblistPrice3:
         newProdcomboboxPrice3 += item
@@ -611,7 +650,7 @@ titleLbl.pack(fill='x')
 
 bigFram=customtkinter.CTkFrame(window,width=1200,height=700)
 bigFram.pack(fill='both',expand=True) 
-
+checklessproduct()
 # Sidebar
 sideMenueFram=customtkinter.CTkFrame(bigFram)
 sideMenueFram.grid(row=0,column=0,rowspan=3,sticky='nws')
