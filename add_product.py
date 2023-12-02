@@ -17,6 +17,14 @@ cursor = db.cursor()
 customtkinter.set_appearance_mode("light")
 customtkinter.set_default_color_theme("dark-blue")
 
+def checklessproduct():
+    cursor.execute("SELECT name FROM ContainerTable WHERE  quantity<10 ")
+    value = cursor.fetchone()
+    if value:
+        messagebox.showwarning("Worning",f"The stock of {value[0]}'s is going to be ended")
+    else:
+        pass
+
 def get_quantity(name,tablename):
     try:
         cursor.execute(f"SELECT quantity FROM {tablename} WHERE name = ?", (name,))
@@ -363,7 +371,7 @@ root.resizable(False, False)
 bigFram=customtkinter.CTkFrame(root,width=1450,height=780)
 bigFram.pack(fill='both',expand=True) 
 
-
+checklessproduct()
 # top fram
 topMenueFram=customtkinter.CTkFrame(bigFram,width=1450,height=50)
 topMenueFram.pack(fill='x',side='top')
