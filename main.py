@@ -146,7 +146,19 @@ def billEachprod(tablename,name,quantity,price):
             return
     except Exception as e:
       messagebox.showerror("Error", "Failed to add product: {}".format(e))
-              
+
+def alsoupdate(tablename,name,quantity):
+    cursor.execute(f"SELECT quantity FROM {tablename} WHERE name = ?", (name,))
+    value = cursor.fetchone()[0]
+    try:
+        if quantity <= value:
+            cursor.execute(f"UPDATE {tablename} SET quantity = quantity - ? WHERE name = ?", [quantity, name])
+            db.commit()
+        else:
+            messagebox.showerror("Error", "Not enough quantity of product")
+            return
+    except Exception as e:
+      messagebox.showerror("Error", "Failed to add product: {}".format(e))              
 
 def addCmbItem1():
     name=combobox1.get()
@@ -215,32 +227,38 @@ def bill_area():
             quantity = int(prod1qnty.get())
             price= get_price(name,"products1")*quantity
             billEachprod("products1",name,quantity,price)
+            alsoupdate("ContainerTable",name,quantity)
         if prod2qnty.get()!='0':
             name = 'Bath Soup'
             quantity = int(prod2qnty.get())
             price= get_price(name,"products1")*quantity
             billEachprod("products1",name,quantity,price)
+            alsoupdate("ContainerTable",name,quantity)
               
         if prod3qnty.get()!='0':
             name = 'Face Wash'
             quantity = int(prod3qnty.get())
             price= get_price(name,"products1")*quantity
             billEachprod("products1",name,quantity,price)
+            alsoupdate("ContainerTable",name,quantity)
         if prod4qnty.get()!='0':
             name = 'Tooth Pest'
             quantity = int(prod4qnty.get())
             price= get_price(name,"products1")*quantity
             billEachprod("products1",name,quantity,price)
+            alsoupdate("ContainerTable",name,quantity)
         if prod5qnty.get()!='0':
             name = 'Hair Gel'
             quantity = int(prod5qnty.get())
             price= get_price(name,"products1")*quantity
             billEachprod("products1",name,quantity,price)
+            alsoupdate("ContainerTable",name,quantity)
         if prod6qnty.get()!='0':
             name = 'Body Lousion'
             quantity = int(prod6qnty.get())
             price= get_price(name,"products1")*quantity
             billEachprod("products1",name,quantity,price)
+            alsoupdate("ContainerTable",name,quantity)
         if len(combo_dict)!=0:
             i=0
             for key, value in combo_dict.items():
@@ -248,7 +266,8 @@ def bill_area():
                 quantity=value
                 price=comblistPrice[i]
                 i=i+1; 
-                billEachprod("products1",name,quantity,price)            
+                billEachprod("products1",name,quantity,price)   
+                alsoupdate("ContainerTable",name,quantity)         
             
      
         # grocery bill
@@ -257,31 +276,37 @@ def bill_area():
             quantity = int(gros1qnty.get())
             price= get_price(name,"products2")*quantity
             billEachprod("products2",name,quantity,price)
+            alsoupdate("ContainerTable",name,quantity)
         if gros2qnty.get()!='0':
             name = 'Oil'
             quantity = int(gros2qnty.get())
             price= get_price(name,"products2")*quantity
             billEachprod("products2",name,quantity,price)
+            alsoupdate("ContainerTable",name,quantity)
         if gros3qnty.get()!='0':
             name = 'Suger'
             quantity = int(gros3qnty.get())
             price= get_price(name,"products2")*quantity
             billEachprod("products2",name,quantity,price)
+            alsoupdate("ContainerTable",name,quantity)
         if gros4qnty.get()!='0':
             name = 'Dall'
             quantity = int(gros4qnty.get())
             price= get_price(name,"products2")*quantity
             billEachprod("products2",name,quantity,price)
+            alsoupdate("ContainerTable",name,quantity)
         if gros5qnty.get()!='0':
             name = 'Tea'
             quantity = int(gros5qnty.get())
             price= get_price(name,"products2")*quantity
             billEachprod("products2",name,quantity,price)
+            alsoupdate("ContainerTable",name,quantity)
         if gros6qnty.get()!='0':
             name = 'Bread'
             quantity = int(gros6qnty.get())
             price= get_price(name,"products2")*quantity
             billEachprod("products2",name,quantity,price)
+            alsoupdate("ContainerTable",name,quantity)
         
         if len(combo_dict2)!=0:
             i=0
@@ -291,6 +316,7 @@ def bill_area():
                 price=comblistPrice2[i]
                 i=i+1; 
                 billEachprod("products2",name,quantity,price)
+                alsoupdate("ContainerTable",name,quantity)
         
         # Drinks bill
         if drink1qnty.get()!='0':
@@ -298,31 +324,37 @@ def bill_area():
             quantity = int(drink1qnty.get())
             price= get_price(name,"products3")*quantity
             billEachprod("products3",name,quantity,price)
+            alsoupdate("ContainerTable",name,quantity)
         if drink2qnty.get()!='0':
             name = 'Pepsi'
             quantity = int(drink2qnty.get())
             price= get_price(name,"products3")*quantity
             billEachprod("products3",name,quantity,price)
+            alsoupdate("ContainerTable",name,quantity)
         if drink3qnty.get()!='0':
             name = '7 Up'
             quantity = int(drink3qnty.get())
             price= get_price(name,"products3")*quantity
             billEachprod("products3",name,quantity,price)
+            alsoupdate("ContainerTable",name,quantity)
         if drink4qnty.get()!='0':
             name = 'Coca Cola'
             quantity = int(drink4qnty.get())
             price= get_price(name,"products3")*quantity
             billEachprod("products3",name,quantity,price)
+            alsoupdate("ContainerTable",name,quantity)
         if drink5qnty.get()!='0':
             name = 'Speed'
             quantity = int(drink5qnty.get())
             price= get_price(name,"products3")*quantity
             billEachprod("products3",name,quantity,price)
+            alsoupdate("ContainerTable",name,quantity)
         if drink6qnty.get()!='0':
             name = 'Sprite'
             quantity = int(drink6qnty.get())
             price= get_price(name,"products3")*quantity
             billEachprod("products3",name,quantity,price)
+            alsoupdate("ContainerTable",name,quantity)
             
         if len(combo_dict3)!=0:
             i=0
@@ -332,6 +364,7 @@ def bill_area():
                 price=comblistPrice3[i]
                 i=i+1; 
                 billEachprod("products3",name,quantity,price)
+                alsoupdate("ContainerTable",name,quantity)
         
         bilArea.insert(END,"\n----------------------------------------------------------------------------------------------------------------")
         if stasionaryTaxentry.get()!='0.0 TK':
