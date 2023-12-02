@@ -17,8 +17,80 @@ cursor = db.cursor()
 customtkinter.set_appearance_mode("light")
 customtkinter.set_default_color_theme("dark-blue")
 
+def get_quantity(name,tablename):
+    try:
+        cursor.execute(f"SELECT quantity FROM {tablename} WHERE name = ?", (name,))
+        qunt = cursor.fetchone()[0]
+        
+    except Exception:
+        messagebox.showerror("Error", "Spelling is not currect of the Products")
+        return
+    return qunt
+def get_price(name,tablename):
+    cursor.execute(f"SELECT price FROM {tablename} WHERE name = ?", (name,))
+    price = cursor.fetchone()[0]
+    return price
+def get_disc(name,tablename):
+    cursor.execute(f"SELECT discount FROM {tablename} WHERE name = ?", (name,))
+    disc = cursor.fetchone()[0]
+    return disc
+
 def serach_products():
-   pass
+    if prod_name_search.get()!="":
+        s_prod_name=prod_name_search.get().lower()
+        search_data(s_prod_name)
+        return
+    else:
+        messagebox.showerror("Error", "Please enter Products name.")
+        return
+
+def search_data(search_term):
+    if search_term:
+        cursor.execute("SELECT * FROM ContainerTable WHERE lower(name) like '%" + search_term + "%'")
+    else:
+        cursor.execute("SELECT * FROM ContainerTable")
+    results = cursor.fetchall()
+
+    # Clear the Treeview
+    treeview.delete(*treeview.get_children())
+
+    # Add the search results to the Treeview
+    for row in results:
+        treeview.insert('', 'end', values=row)
+
+def get_data(event):
+    new_clear()
+    selected_row=treeview.focus()
+    data=treeview.item(selected_row)
+    row=data["values"]
+    id_entry=row[0]
+    s_pr_name_enty.insert(0,row[0])
+    s_pr_qnt_enty.insert(0,row[1])
+    s_pr_price_enty.insert(0,row[2])
+    s_pr_discount_enty.insert(0,row[4])
+
+
+def Clear():
+   prod_name_search.delete(0,END)
+   s_pr_name_enty.delete(0,END)
+   s_pr_qnt_enty.delete(0,END)
+   s_pr_price_enty.delete(0,END)
+   s_pr_discount_enty.delete(0,END)
+   # Clear the Treeview
+   treeview.delete(*treeview.get_children())
+   cursor.execute("SELECT * FROM ContainerTable")
+   results = cursor.fetchall()  
+   for row in results:
+        treeview.insert('', 'end', values=row)
+   # Add the search results to the Treeview
+   
+
+def new_clear():
+   prod_name_search.delete(0,END)
+   s_pr_name_enty.delete(0,END)
+   s_pr_qnt_enty.delete(0,END)
+   s_pr_price_enty.delete(0,END)
+   s_pr_discount_enty.delete(0,END)
 
 
 def update_adding():
@@ -56,6 +128,7 @@ def add_prod1():
          # Insert the new product into the database.
         try:
           cursor.execute("UPDATE products1 SET quantity = quantity + ? WHERE name = ?", [quantity, name])
+          cursor.execute("UPDATE ContainerTable SET quantity = quantity + ? WHERE name = ?", [quantity, name])
           db.commit()
         except Exception as e:
           messagebox.showerror("Error", "Failed to add product: {}".format(e))
@@ -91,6 +164,7 @@ def add_prod2():
          # Insert the new product into the database.
         try:
           cursor.execute("UPDATE products2 SET quantity = quantity + ? WHERE name = ?", [quantity, name])
+          cursor.execute("UPDATE ContainerTable SET quantity = quantity + ? WHERE name = ?", [quantity, name])
           db.commit()
         except Exception as e:
           messagebox.showerror("Error", "Failed to add product: {}".format(e))
@@ -125,6 +199,7 @@ def add_prod3():
          # Insert the new product into the database.
         try:
           cursor.execute("UPDATE products3 SET quantity = quantity + ? WHERE name = ?", [quantity, name])
+          cursor.execute("UPDATE ContainerTable SET quantity = quantity + ? WHERE name = ?", [quantity, name])
           db.commit()
         except Exception as e:
           messagebox.showerror("Error", "Failed to add product: {}".format(e))
@@ -139,6 +214,7 @@ def add_prod3():
         discount = float(int(adddrinkDiscount.get())/100)
         try:
           cursor.execute("UPDATE products3 SET discount = ? WHERE name = ?", [discount, name])
+          cursor.execute("UPDATE ContainerTable SET discount = ? WHERE name = ?", [discount, name])
           cursor.execute("UPDATE products3 SET discount_price = price - (price * ? ) WHERE name = ?", [discount, name])
           db.commit()
         except Exception as e:
@@ -164,6 +240,8 @@ def addNewProduct():
             db.commit()
             cursor.execute("INSERT INTO products1 (name, quantity, price,discount_price,discount) VALUES(?,?,?,?,?)",details)
             db.commit()
+            cursor.execute("INSERT INTO ContainerTable (name, quantity, price,discount_price,discount) VALUES(?,?,?,?,?)",details)
+            db.commit()
             messagebox.showinfo("Success","product Added Successfully")
             update_adding()
             update_combobox1()
@@ -175,6 +253,8 @@ def addNewProduct():
             db.commit()
             cursor.execute("INSERT INTO products2 (name, quantity, price,discount_price,discount) VALUES(?,?,?,?,?)",details)
             db.commit()
+            cursor.execute("INSERT INTO ContainerTable (name, quantity, price,discount_price, discount) VALUES(?,?,?,?,?)",details)
+            db.commit()
             messagebox.showinfo("Success","product Added Successfully")
             update_adding()
             update_combobox2()
@@ -182,9 +262,12 @@ def addNewProduct():
         elif (addNewProductType.get() == "D" or addNewProductType.get() == "d"):
             details=[addNewProductEntry.get(),int(addNewProductQuntity.get()),float(addNewProductPrice.get()),float(addNewProductPrice.get()),0]
             name=addNewProductEntry.get()
+
             cursor.execute("INSERT INTO newproducts3 (name) VALUES(?)",(name,))
             db.commit()
             cursor.execute("INSERT INTO products3 (name, quantity, price,discount_price,discount) VALUES(?,?,?,?,?)",details)
+            db.commit()
+            cursor.execute("INSERT INTO ContainerTable (name, quantity, price,discount_price,discount) VALUES(?,?,?,?,?)",details)
             db.commit()
             messagebox.showinfo("Success","product Added Successfully")
             update_adding()
@@ -215,6 +298,8 @@ def Delete_productbtn():
            cursor.execute("DELETE FROM products3 WHERE name=?",[name])
            db.commit()
            cursor.execute("DELETE FROM newproducts3 WHERE name=?",[name])
+           db.commit()
+           cursor.execute("DELETE FROM ContainerTable WHERE name=?",[name])
            db.commit()
            messagebox.showinfo("Success","Employee Deleted Successfully")
            update_adding() 
@@ -403,6 +488,8 @@ prod_name_search=customtkinter.CTkEntry(searchfram,placeholder_text='Search Prod
 prod_name_search.place(x=10,y=70)
 prod_search_btn=customtkinter.CTkButton(searchfram,text='Search',font=("Arial",12),command=serach_products,height=40,width=200)
 prod_search_btn.place(x=10,y=120)
+prod_search_clr_btn=customtkinter.CTkButton(searchfram,text='Clear',font=("Arial",12),command=Clear,height=30,width=200,fg_color="red")
+prod_search_clr_btn.place(x=10,y=170)
 
 search_prod_detailsfrm = customtkinter.CTkFrame(searchfram,height=300,width=400)
 search_prod_detailsfrm.place(x=260,y=30)
@@ -443,31 +530,24 @@ table_data3=get_product_quantities3()
 
 treeview = ttk.Treeview(remainingFram,columns=(1,2,3,4,5),show='headings',style='mystyle.Treeview',height=20,selectmode='extended')
 
-# Add the headers to the treeview widget.
-treeview["columns"] = ("Product Name", "Quantity","Price","Discount_price","Discount")
-treeview.heading("Product Name", text="Product Name",)
-treeview.heading("Quantity", text="Quantity")
-treeview.heading("Price", text="Price")
-# add two more heading
-treeview.heading("Discount_price", text="Discount_price")
-treeview.heading("Discount", text="Discount")
-# Insert the table data into the treeview widget.
+treeview.heading('1',text='Product Name')
+treeview.column('1',width=200)
+treeview.heading('2',text='Quantity')
+treeview.column('2',width=150)
+treeview.heading('3',text='Price')
+treeview.column('3',width=150)
+treeview.heading('4',text='Discount_price')
+treeview.column('4',width=150)
+treeview.heading('5',text='Discount')
+treeview.column('5',width=150)
+treeview.bind('<ButtonRelease-1>',get_data)
+
 for row in table_data1:
     treeview.insert("", tk.END, values=row)
 for row in table_data2:
     treeview.insert("", tk.END, values=row)
 for row in table_data3:
     treeview.insert("", tk.END, values=row)
-
-# Remove the `Product ID` column from the treeview widget.
-treeview["displaycolumns"] = ("Product Name", "Quantity","Price","Discount_price","Discount")
-# Set the `columnconfigure` method for the treeview widget to remove the space.
-treeview.columnconfigure(0, weight=1)
-treeview.columnconfigure(1, weight=1)
-treeview.columnconfigure(2, weight=1)
-# add two more column
-treeview.columnconfigure(3, weight=1)
-treeview.columnconfigure(4, weight=1)
 
 # Pack the treeview widget.
 scrollbar = ttk.Scrollbar(remainingFram, orient="vertical", command=treeview.yview)
